@@ -65,9 +65,9 @@ def load_hf_lm_and_tokenizer(
         )
     else:
         if device_map:
-            model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map=device_map, torch_dtype=torch_dtype, token=token)
+            model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map=device_map, torch_dtype=torch_dtype, token=token,trust_remote_code=True)
         else:
-            model = AutoModelForCausalLM.from_pretrained(model_name_or_path, torch_dtype=torch_dtype, token=token)
+            model = AutoModelForCausalLM.from_pretrained(model_name_or_path, torch_dtype=torch_dtype, token=token,trust_remote_code=True)
             if torch.cuda.is_available():
                 model = model.cuda()
         if convert_to_half:
