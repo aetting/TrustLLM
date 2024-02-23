@@ -2,6 +2,7 @@ import os, time
 import torch
 from fastchat.model import load_model, get_conversation_template
 from trustllm.utils.generation_utils import *
+from trustllm.utils.open_instruct_utils import *
 from dotenv import load_dotenv
 import os
 import json
@@ -272,12 +273,17 @@ class LLMGeneration:
         if (model_name in self.online_model_dict) and ((self.online_model and self.use_replicate) or (self.online_model and self.use_deepinfra)):
             model, tokenizer = (None, None) 
         else:
-            model,tokenizer = load_model(
-            self.model_path,
-            num_gpus=self.num_gpus,
-            device=self.device,
-            debug=self.debug,
-        )
+            try:
+                model,tokenizer = load_model(
+                self.model_path,
+                num_gpus=self.num_gpus,
+                device=self.device,
+                debug=self.debug,
+            )
+            except:
+                model,tokenizer = load_hf_lm_and_tokenizer(
+                    self.model_path
+                )
 
         test_functions = {
             'robustness': self.run_robustness,
