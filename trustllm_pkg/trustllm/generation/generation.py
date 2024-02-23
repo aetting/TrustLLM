@@ -56,6 +56,7 @@ class LLMGeneration:
             """
 
         prompt = self._prompt2conversation(prompt)
+        import pdb; pdb.set_trace()
         inputs = tokenizer([prompt])
         inputs = {k: torch.tensor(v).to(self.device) for k, v in inputs.items()}
         output_ids = model.generate(
