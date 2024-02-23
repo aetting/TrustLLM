@@ -19,6 +19,7 @@ class LLMGeneration:
                  test_type,
                  data_path,
                  model_path,
+                 model_name = "",
                  online_model=False,
                  use_deepinfra=False,
                  use_replicate=False,
@@ -28,7 +29,7 @@ class LLMGeneration:
                  debug=False,
                  device='cuda:0'
                  ):
-        self.model_name = ""
+        self.model_name = model_name
         self.model_path = model_path
         self.test_type = test_type
         self.data_path = data_path
