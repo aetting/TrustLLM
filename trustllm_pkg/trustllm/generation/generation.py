@@ -27,7 +27,8 @@ class LLMGeneration:
                  num_gpus=1,
                  max_new_tokens=512,
                  debug=False,
-                 device='cuda:0'
+                 device='cuda:0',
+                 return_token_type_ids = True
                  ):
         self.model_name = ""
         self.model_path = model_path
@@ -44,6 +45,7 @@ class LLMGeneration:
         self.device = device
         self.use_replicate = use_replicate
         self.use_deepinfra = use_deepinfra
+        self.return_token_type_ids = return_token_type_ids
 
     def _generation_hf(self, prompt, tokenizer, model, temperature):
         """
@@ -59,7 +61,7 @@ class LLMGeneration:
         prompt = self._prompt2conversation(prompt)
         if self.debug:
             import pdb; pdb.set_trace()
-        inputs = tokenizer([prompt])
+        inputs = tokenizer([prompt],return_token_type_ids=self.return_token_type_ids)
         inputs = {k: torch.tensor(v).to(self.device) for k, v in inputs.items()}
         output_ids = model.generate(
             **inputs,
